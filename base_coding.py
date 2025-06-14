@@ -1,26 +1,23 @@
-import streamlit as st 
-import requests
+import os
 
-# Set the app title 
-st.title('My First Streamlit App !!') 
+import pandas as pd
 
-# Add a welcome message 
-st.write('Welcome to my Streamlit app!') 
+import matplotlib.pyplot as plt
 
-# Create a text input 
-widgetuser_input = st.text_input('Enter a custom message:', 'Hello, Streamlit!') 
+from influxdb_client import InfluxDBClient, WriteOptions
 
-# Display the customized message 
-st.write('Customized Message:', widgetuser_input)
+from dotenv import load_dotenv
 
+load_dotenv()
 
-#API calls
-response = requests.get('https://api.vatcomply.com/rates?base=MYR')
+df = pd.read_csv("data/jena_climate_2009_2016.csv")
 
-if response.status_code == 200:
-    data = response.json()
-    st.write('Output:')
-    st.json(data)  # nicely formatted JSON output
-else:
-    st.error(f"API call failed with status code: {response.status_code}")
+df = df[['Date Time', 'T (degC)']]
 
+df.index = pd.to_datetime(df.pop('Date Time'), format='%d.%m.%Y %H:%M:%S')
+
+df['Measured Fluid'] = ['Air'] * df.shape[0]
+
+plt.plot(df['T (degC)'])
+
+plt.show()
