@@ -1,23 +1,33 @@
-import os
+import streamlit as st
+import influxdb_client
+from influxdb_client.client.write_api import SYNCHRONOUS
 
-import pandas as pd
+bucket = "TSP 2 MINI PROJECT"
+org = "NA"
+token = "JL_Xx3ZCyXyl71EG_q902tRcHkFqZpeNiFBiqCVfzwChiAVLw_gTQ_NnK3qLOfHkn-44e9CmXRaSDBoi-mSZsQ=="
 
-import matplotlib.pyplot as plt
+url ="http://localhost:8086"
 
-from influxdb_client import InfluxDBClient, WriteOptions
+client = influxdb_client.InfluxDBClient(
+   url = url,
+   token = token,
+   org = org
+)
 
-from dotenv import load_dotenv
+write_api = client.write_api(write_options=SYNCHRONOUS)
 
-load_dotenv()
+p = influxdb_client.Point("_measurement").tag("location", "Prague").field("L1_V", 11.5)
+write_api.write(bucket=bucket, org=org, record=p)
 
-df = pd.read_csv("data/jena_climate_2009_2016.csv")
+query_api = client.query_api()
+query = 'from(bucket:"TSP 2 MINI PROJECT")\
+|> range(start: -1h)\
+|> filter(fn:(r) => r._measurement == "TNB_1")\
+|> filter(fn:(r) => r._field == "L1_V")'
+result = query_api.query(org=org, query=query)
+results = []
+for table in result:
+    for record in table.records:
+        results.append((record.get_field(), record.get_value()))
 
-df = df[['Date Time', 'T (degC)']]
-
-df.index = pd.to_datetime(df.pop('Date Time'), format='%d.%m.%Y %H:%M:%S')
-
-df['Measured Fluid'] = ['Air'] * df.shape[0]
-
-plt.plot(df['T (degC)'])
-
-plt.show()
+st.print(results)
