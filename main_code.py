@@ -1,4 +1,4 @@
-#import streamlit as st
+import streamlit as st
 import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
 
@@ -30,5 +30,4 @@ for table in result:
     for record in table.records:
         results.append((record.get_field(), record.get_value()))
 
-#st.print(results)
-print(results)
+st.print(results)
