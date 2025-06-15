@@ -6,7 +6,7 @@ bucket = "TSP 2 MINI PROJECT"
 org = "NA"
 token = "JL_Xx3ZCyXyl71EG_q902tRcHkFqZpeNiFBiqCVfzwChiAVLw_gTQ_NnK3qLOfHkn-44e9CmXRaSDBoi-mSZsQ=="
 
-url ="https://localhost:8086"
+url ="http://localhost:8086"
 
 client = influxdb_client.InfluxDBClient(
    url = url,
