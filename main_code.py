@@ -20,8 +20,7 @@ p = influxdb_client.Point("_measurement").tag("location", "Prague").field("L1_V"
 write_api.write(bucket=bucket, org=org, record=p)
 
 query_api = client.query_api()
-query = f'''
-'from(bucket:"TSP 2 MINI PROJECT")\
+query = 'from(bucket:"TSP 2 MINI PROJECT")\
 |> range(start: -1h)\
 |> filter(fn:(r) => r._measurement == "TNB_1")\
 |> filter(fn:(r) => r._field == "L1_V")'
@@ -30,5 +29,5 @@ results = []
 for table in result:
     for record in table.records:
         results.append((record.get_field(), record.get_value()))
-
+st.write("Query Result: "
 st.print(results)
