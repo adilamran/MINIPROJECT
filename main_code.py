@@ -11,7 +11,8 @@ url ="http://localhost:8086"
 client = influxdb_client.InfluxDBClient(
    url = url,
    token = token,
-   org = org
+   org = org,
+   bucket = bucket
 )
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
