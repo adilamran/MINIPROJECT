@@ -6,7 +6,7 @@ bucket = "TSP 2 MINI PROJECT"
 org = "NA"
 token = "JL_Xx3ZCyXyl71EG_q902tRcHkFqZpeNiFBiqCVfzwChiAVLw_gTQ_NnK3qLOfHkn-44e9CmXRaSDBoi-mSZsQ=="
 
-url ="http://localhost:8086"
+url ="http://localhost:8086/orgs/e857bab600fece02/dashboards/0f06bc11c46b9000?lower=now%28%29+-+24h"
 
 client = influxdb_client.InfluxDBClient(
    url = url,
@@ -29,5 +29,5 @@ results = []
 for table in result:
     for record in table.records:
         results.append((record.get_field(), record.get_value()))
-st.print("Query Result: "
+
 st.print(results)
